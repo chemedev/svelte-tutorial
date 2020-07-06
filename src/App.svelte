@@ -3,6 +3,12 @@
   let lastName = 'Hendrix';
   let beltColour = 'black';
 
+  $: fullName = `${firstName} ${lastName}`;
+  $: {
+    console.log(beltColour);
+    console.log(fullName);
+  }
+
   const handleClick = () => {
     beltColour = 'orange';
   };
@@ -19,13 +25,6 @@
     margin: 0 auto;
   }
 
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
-
   @media (min-width: 640px) {
     main {
       max-width: none;
@@ -34,10 +33,8 @@
 </style>
 
 <main>
-  <h1>Hello {name}!</h1>
-  <p style="color:{beltColour}">{beltColour} belt</p>
-  <button on:click={handleClick}>update belt colour</button>
-  <!-- two-way binding -->
-  <!-- <input type="text" on:input={handleInput} value={beltColour} /> -->
+  <p style="color: {beltColour}">{fullName} - {beltColour} belt</p>
+  <input type="text" bind:value={firstName} />
+  <input type="text" bind:value={lastName} />
   <input type="text" bind:value={beltColour} />
 </main>
