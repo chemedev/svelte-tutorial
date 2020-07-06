@@ -1,7 +1,6 @@
 <script>
-  export let message = 'default value';
+  export let showModal = false;
   export let isPromo = false;
-  let showModal = true;
 </script>
 
 <style>
@@ -17,18 +16,18 @@
     max-width: 400px;
     margin: 10% auto;
     text-align: center;
-    background-color: #ffffff;
+    background: white;
   }
   .promo .modal {
-    background-color: crimson;
-    color: #ffffff;
+    background: crimson;
+    color: white;
   }
 </style>
 
 {#if showModal}
-  <div class="backdrop" class:promo={isPromo}>
+  <div class="backdrop" class:promo={isPromo} on:click|self>
     <div class="modal">
-      <p>{message}</p>
+      <slot />
     </div>
   </div>
 {/if}

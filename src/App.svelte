@@ -1,6 +1,12 @@
 <script>
   import Modal from './Modal.svelte';
 
+  let showModal = false;
+
+  const toggleModal = () => {
+    showModal = !showModal;
+  };
+
   let people = [
     { name: 'yoshi', beltColour: 'black', age: 25, id: 1 },
     { name: 'mario', beltColour: 'orange', age: 45, id: 2 },
@@ -27,8 +33,16 @@
   }
 </style>
 
-<Modal message="Hey, I am a prop value" isPromo={true} />
+<Modal {showModal} on:click={toggleModal}>
+  <h3>Add a New Person</h3>
+  <form>
+    <input type="text" placeholder="name" />
+    <input type="text" placeholder="belt colour" />
+    <button>Add Person</button>
+  </form>
+</Modal>
 <main>
+  <button on:click|once={toggleModal}>Open Modal</button>
   {#each people as person (person.id)}
     <div>
       <h4>{person.name}</h4>
