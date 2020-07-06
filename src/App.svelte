@@ -1,65 +1,60 @@
 <script>
-  import Modal from './Modal.svelte';
-  import AddPersonForm from './AddPersonForm.svelte';
+  import Header from './components/Header.svelte';
+  import Footer from './components/Footer.svelte';
+  import PollList from './components/PollList.svelte';
+  import CreatePollForm from './components/CreatePollForm.svelte';
+  import Tabs from './shared/Tabs.svelte';
 
-  let showModal = false;
+  // tabs
+  let items = ['Current Polls', 'Add New Poll'];
+  let activeItem = 'Current Polls';
 
-  const toggleModal = () => {
-    showModal = !showModal;
-  };
-
-  let people = [
-    { name: 'yoshi', beltColour: 'black', age: 25, id: 1, skills: [] },
-    { name: 'mario', beltColour: 'orange', age: 45, id: 2, skills: [] },
-    { name: 'luigi', beltColour: 'brown', age: 35, id: 3, skills: [] }
+  // polls
+  let polls = [
+    {
+      id: 1,
+      question: 'Python or JavaScript?',
+      answerA: 'Python',
+      answerB: 'JavaScript',
+      votesA: 9,
+      votesB: 15
+    }
   ];
 
-  const handleClick = (e, id) => {
-    people = people.filter(person => person.id !== id);
+  const tabChange = e => {
+    activeItem = e.detail;
   };
 
-  const addPerson = e => {
-    console.log(e.detail);
-    const person = e.detail;
-    people = [person, ...people];
-    showModal = false;
+  const handleAdd = e => {
+    const poll = e.detail;
+    polls = [poll, ...polls];
+    console.log(polls);
+    activeItem = 'Current Polls';
+  };
+
+  const handleVote = e => {
+    const { id, option } = e.detail;
+    let copiedPolls = [...polls];
+    let upvotedPoll = copiedPolls.find(poll => poll.id === id);
+    option === 'a' ? upvotedPoll.votesA++ : upvotedPoll.votesB++;
+    polls = copiedPolls;
   };
 </script>
 
 <style>
   main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
+    max-width: 960px;
+    margin: 40px auto;
   }
 </style>
 
-<Modal {showModal} on:click={toggleModal}>
-  <AddPersonForm on:addPerson={addPerson} />
-</Modal>
+<Header />
 <main>
-  <button on:click|once={toggleModal}>Open Modal</button>
-  {#each people as person (person.id)}
-    <div>
-      <h4>{person.name}</h4>
-      {#if person.beltColour === 'black'}
-        <p>
-          <strong>MASTER NINJA</strong>
-        </p>
-      {/if}
-      <p>{person.age} years old, {person.beltColour} belt</p>
-      {#each person.skills as skill, i}
-        <p>{skill}</p>
-      {/each}
-      <button on:click={e => handleClick(e, person.id)}>delete</button>
-    </div>
-  {:else}
-    <p>There are no people to show...</p>
-  {/each}
+  <Tabs {activeItem} {items} on:tabChange={tabChange} />
+  {#if activeItem === 'Current Polls'}
+    <PollList {polls} on:vote={handleVote} />
+  {:else if activeItem === 'Add New Poll'}
+    <CreatePollForm on:add={handleAdd} />
+  {/if}
 </main>
+<Footer />
