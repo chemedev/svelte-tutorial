@@ -1,4 +1,6 @@
 <script>
+  import Modal from './Modal.svelte';
+
   let people = [
     { name: 'yoshi', beltColour: 'black', age: 25, id: 1 },
     { name: 'mario', beltColour: 'orange', age: 45, id: 2 },
@@ -9,8 +11,6 @@
     people = people.filter(person => person.id !== id);
     console.log(e);
   };
-
-  let num = 3;
 </script>
 
 <style>
@@ -27,14 +27,7 @@
   }
 </style>
 
-{#if num > 20}
-  <p>Greater than 20</p>
-{:else if num > 5}
-  <p>Greater than 5</p>
-{:else}
-  <p>Not greater than 5</p>
-{/if}
-
+<Modal message="Hey, I am a prop value" isPromo={true} />
 <main>
   {#each people as person (person.id)}
     <div>
