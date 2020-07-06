@@ -1,14 +1,6 @@
 <script>
+  import PollStore from '../stores/PollStore';
   import PollDetails from '../components/PollDetails.svelte';
-
-  export let polls = [
-    {
-      id: 0,
-      question: 'Add your own poll!',
-      answerA: 'Your option',
-      answerB: 'Another one'
-    }
-  ];
 </script>
 
 <style>
@@ -20,9 +12,9 @@
 </style>
 
 <div class="poll-list">
-  {#each polls as poll (poll.id)}
+  {#each $PollStore as poll (poll.id)}
     <div>
-      <PollDetails {poll} on:vote />
+      <PollDetails {poll} />
     </div>
   {/each}
 </div>
