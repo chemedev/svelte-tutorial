@@ -12,6 +12,7 @@
     padding: 8px 12px;
     font-weight: bold;
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+    user-select: none;
   }
   .primary {
     background-color: #d91b42;

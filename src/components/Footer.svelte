@@ -2,6 +2,7 @@
   footer {
     padding: 40px;
     text-align: center;
+    user-select: none;
   }
   .copyright {
     color: #aaa;
