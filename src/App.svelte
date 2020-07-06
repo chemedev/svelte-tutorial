@@ -1,5 +1,6 @@
 <script>
   import Modal from './Modal.svelte';
+  import AddPersonForm from './AddPersonForm.svelte';
 
   let showModal = false;
 
@@ -8,14 +9,20 @@
   };
 
   let people = [
-    { name: 'yoshi', beltColour: 'black', age: 25, id: 1 },
-    { name: 'mario', beltColour: 'orange', age: 45, id: 2 },
-    { name: 'luigi', beltColour: 'brown', age: 35, id: 3 }
+    { name: 'yoshi', beltColour: 'black', age: 25, id: 1, skills: [] },
+    { name: 'mario', beltColour: 'orange', age: 45, id: 2, skills: [] },
+    { name: 'luigi', beltColour: 'brown', age: 35, id: 3, skills: [] }
   ];
 
   const handleClick = (e, id) => {
     people = people.filter(person => person.id !== id);
-    console.log(e);
+  };
+
+  const addPerson = e => {
+    console.log(e.detail);
+    const person = e.detail;
+    people = [person, ...people];
+    showModal = false;
   };
 </script>
 
@@ -34,12 +41,7 @@
 </style>
 
 <Modal {showModal} on:click={toggleModal}>
-  <h3>Add a New Person</h3>
-  <form>
-    <input type="text" placeholder="name" />
-    <input type="text" placeholder="belt colour" />
-    <button>Add Person</button>
-  </form>
+  <AddPersonForm on:addPerson={addPerson} />
 </Modal>
 <main>
   <button on:click|once={toggleModal}>Open Modal</button>
@@ -52,6 +54,9 @@
         </p>
       {/if}
       <p>{person.age} years old, {person.beltColour} belt</p>
+      {#each person.skills as skill, i}
+        <p>{skill}</p>
+      {/each}
       <button on:click={e => handleClick(e, person.id)}>delete</button>
     </div>
   {:else}
